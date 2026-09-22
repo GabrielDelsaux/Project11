@@ -29,7 +29,7 @@ app.use(express.json());
 // route inscription 
 app.post('/inscription', (req, res) => {
   connection.query(
-  'INSERT INTO user (login, password) VALUES (?, ?)',
+  'INSERT INTO User (login, password) VALUES (?, ?)',
   [req.body.login, req.body.password],
   (err, results) => {
     if (err) {
