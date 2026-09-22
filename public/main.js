@@ -6,7 +6,7 @@ function inscription(req, res) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ login: monInput.value , password: monInput2.value })     
+        body: JSON.stringify({ login: loginInput.value , password: passwordInput.value })     
     }).then(response => response.text())
       .then(data => {
           alert(data);
