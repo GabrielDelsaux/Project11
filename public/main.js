@@ -1,6 +1,17 @@
 //fonction inscription 
 function inscription(req, res) {
-
+    registerButton.addEventListener('click', () => {
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ login: monInput.value , password: monInput2.value })     
+    }).then(response => response.text())
+      .then(data => {
+          alert(data);
+      });
+});
 
 }
 
