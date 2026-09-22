@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-cont express = require('express')
+const express = require('express');
 
 
 const connection = mysql.createConnection({
