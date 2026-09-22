@@ -27,7 +27,19 @@ app.use(express.json());
 
 // route inscription 
 app.post('/inscription', (req, res) => {
-
+  connection.query(
+  'INSERT INTO user (login, password) VALUES (?, ?)',
+  [req.body.login, req.body.password],
+  (err, results) => {
+    if (err) {
+      console.error('Erreur lors de l\'insertion dans la base de données :', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      return;
+    }
+    console.log('Insertion réussie, ID utilisateur :', results.insertId);
+    res.json({ message: 'Inscription réussie !', userId: results.insertId });
+  }
+);
 
 }
 
