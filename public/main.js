@@ -1,7 +1,7 @@
 //fonction inscription 
 function inscription(req, res) {
     registerButton.addEventListener('click', () => {
-    fetch('/register', {
+    fetch('/inscription', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
