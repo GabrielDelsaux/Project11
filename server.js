@@ -6,11 +6,12 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 
 const connection = mysql.createConnection({
-    host : process.env.ipBDD,
-    user : process.env.userBDD,
-    password : process.env.passwordBDD,
-    database : process.env.databaseBDD
-})
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT || 3306)
+});
 
 connection.connect((err) => {
   if (err) {
@@ -38,10 +39,10 @@ app.post('/inscription', (req, res) => {
     }
     console.log('Insertion réussie, ID utilisateur :', results.insertId);
     res.json({ message: 'Inscription réussie !', userId: results.insertId });
-  }
-);
+  })
+});
 
-}
+
 
 
 
@@ -50,21 +51,22 @@ app.post('/inscription', (req, res) => {
 //route se connecter 
 app.post('/connexion', (req, res) => {
 
-}
+
+});
 
 
 //route se déconnecter 
 app.post('/deconnexion', (req, res) => {
 
 
-}
+});
 
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
 
 
 
-}
+});
 
 
 
@@ -75,7 +77,7 @@ app.post('/supprimerCompte', (req, res) => {
 app.post('/supprimerUser', (req, res) => {
 
 
-}
+});
 
 
 
