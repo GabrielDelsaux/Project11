@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 
 
 // fonction s'incrire 
-function s'inscrire(req, res) {
+function sinscrire(req, res) {
     connection.query(
   'INSERT INTO user (login, password) VALUES (?, ?)',
   [req.body.login, req.body.password],
