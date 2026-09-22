@@ -9,6 +9,7 @@ const connection = mysql.createConnection({
     database : process.env.databaseBDD
 })
 
+
 // fonction s'incrire 
 function s'inscrire(req, res) {
 
@@ -45,3 +46,4 @@ function supprimerUser(req, res) {
 
 
 }
+
