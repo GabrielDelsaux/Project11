@@ -71,7 +71,7 @@ app.post('/supprimerCompte', (req, res) => {
 
   suppresion.query(
     
-    'DELETE FROM user (id)',
+    'DELETE FROM user WHERE id = ?', [id],
 
     
     (err, results) => {
