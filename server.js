@@ -68,23 +68,19 @@ app.post('/connexion', (req, res) => {
 
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
-
-  suppresion.query(
-    
-    'DELETE FROM user WHERE id = ?', [id],
-
-    
+  const { login } = req.body;
+  connection.query(
+    'DELETE FROM user WHERE login = ?', [login],
     (err, results) => {
       if (err) {
         console.error('Erreur lors de la suppression dans la base de données :', err);
         res.status(500).json({ message: 'Erreur serveur' });
         return;
       }
-      console.log('suppr réussi, ID utilisateur :', results.insertId);
-      res.json({ message: 'Inscription réussie !', userId: results.insertId });
+      console.log('suppr réussi, utilisateur :', results.insertId);
+      res.json({ message: 'Suppression réussie !' });
     }
   );
-
 });
 
 

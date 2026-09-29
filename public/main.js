@@ -4,7 +4,7 @@ const passwordInput = document.getElementById('passwordInput');
 const loginButton = document.getElementById('login');
 const decoBtn = document.getElementById('decoBtn');
 const supprBtn = document.getElementById('supprBtn');
-const id = localStorage.getItem("id");
+const login = localStorage.getItem("login");
 const text = document.getElementById('text');
 
 //fonction inscription 
@@ -86,8 +86,21 @@ decoBtn.addEventListener('click', () => {
 
 //fonction qui permet au user de supprimer son compte
 supprBtn.addEventListener('click', () => {
-        
-        alert('Suppression réussie ! au revoir');
+    if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        fetch('/supprimerCompte', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ login: user.login })
+        }).then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                localStorage.removeItem('user');
+                window.location.reload();
+            });
+    }
 });
 
 //fonction qui permet a l'admin de supprimer un user
