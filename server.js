@@ -65,11 +65,6 @@ app.post('/connexion', (req, res) => {
   });
 });
 
-//route se déconnecter 
-app.post('/deconnexion', (req, res) => {
-
-});
-
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
 
