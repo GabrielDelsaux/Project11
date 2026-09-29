@@ -2,6 +2,7 @@ const registerButton = document.getElementById('monBouton4');
 const loginInput = document.getElementById('loginInput');
 const passwordInput = document.getElementById('passwordInput');
 const loginButton = document.getElementById('login');
+const decoBtn = document.getElementById('decoBtn');
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -39,10 +40,12 @@ loginButton.addEventListener('click', () => {
 });
 
 //fonction se déconnecter
-function deconnexion(req, res) {
-
-
-}
+decoBtn.addEventListener('click', () => {
+        localStorage.removeItem('login');
+        localStorage.removeItem('password');
+        authModal.classList.remove('hidden');
+        decoBtn.style.display = 'none';
+});
 
 //fonction qui permet au user de supprimer son compte
 function supprimerCompte(req, res) {
