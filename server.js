@@ -45,9 +45,24 @@ app.post('/register', (req, res) => {
 });
 
 //route se connecter 
-app.post('/connexion', (req, res) => {
-
-
+app.post('/connexion', (req, res) => {  
+  console.log(req.body);
+  //on récupère le login et le password
+  const { login, password } = req.body;
+  connection.query('SELECT * FROM user WHERE login = ? AND password = ?', [login, password], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la vérification des identifiants :', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(401).json({ message: 'Identifiants invalides' });
+      return;
+    }
+    // Identifiants valides 
+    //renvoi les information du user
+    res.json({ message: 'Connexion réussie !', user: results[0] });
+  });
 });
 
 //route se déconnecter 
