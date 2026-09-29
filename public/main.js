@@ -3,6 +3,8 @@ const loginInput = document.getElementById('loginInput');
 const passwordInput = document.getElementById('passwordInput');
 const loginButton = document.getElementById('login');
 const decoBtn = document.getElementById('decoBtn');
+const supprBtn = document.getElementById('supprBtn');
+
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -50,10 +52,10 @@ decoBtn.addEventListener('click', () => {
 });
 
 //fonction qui permet au user de supprimer son compte
-function supprimerCompte(req, res) {
-    
-
-}
+supprBtn.addEventListener('click', () => {
+        
+        alert('Suppression réussie ! au revoir');
+});
 
 //fonction qui permet a l'admin de supprimer un user
 function supprimerUser(req, res) {

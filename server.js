@@ -68,14 +68,23 @@ app.post('/connexion', (req, res) => {
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
 
+  suppresion.query(
+    
+    'DELETE FROM user (id)',
+    let id = localStorage.getItem("id"),
+    
+    (err, results) => {
+      if (err) {
+        console.error('Erreur lors de l\'insertion dans la base de données :', err);
+        res.status(500).json({ message: 'Erreur serveur' });
+        return;
+      }
+      console.log('Insertion réussie, ID utilisateur :', results.insertId);
+      res.json({ message: 'Inscription réussie !', userId: results.insertId });
+    }
+  );
 
 });
-
-
-
-
-
-
 //route qui permet a l'admin de supprimer un user 
 app.post('/supprimerUser', (req, res) => {
 
