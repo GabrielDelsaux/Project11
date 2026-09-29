@@ -4,7 +4,7 @@ const app = express();
 const mysql = require('mysql2');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const id = localStorage.getItem("id");
+
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -86,6 +86,8 @@ app.post('/supprimerCompte', (req, res) => {
   );
 
 });
+
+
 //route qui permet a l'admin de supprimer un user 
 app.post('/supprimerUser', (req, res) => {
 
