@@ -41,10 +41,8 @@ loginButton.addEventListener('click', () => {
 
 //fonction se déconnecter
 decoBtn.addEventListener('click', () => {
-        localStorage.removeItem('login');
-        localStorage.removeItem('password');
-        authModal.classList.remove('hidden');
-        decoBtn.style.display = 'none';
+        localStorage.removeItem('user');
+        alert('Déconnexion réussie !');
 });
 
 //fonction qui permet au user de supprimer son compte
