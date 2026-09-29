@@ -4,6 +4,7 @@ const app = express();
 const mysql = require('mysql2');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const id = localStorage.getItem("id");
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -71,15 +72,15 @@ app.post('/supprimerCompte', (req, res) => {
   suppresion.query(
     
     'DELETE FROM user (id)',
-    let id = localStorage.getItem("id"),
+
     
     (err, results) => {
       if (err) {
-        console.error('Erreur lors de l\'insertion dans la base de données :', err);
+        console.error('Erreur lors de la suppression dans la base de données :', err);
         res.status(500).json({ message: 'Erreur serveur' });
         return;
       }
-      console.log('Insertion réussie, ID utilisateur :', results.insertId);
+      console.log('suppr réussi, ID utilisateur :', results.insertId);
       res.json({ message: 'Inscription réussie !', userId: results.insertId });
     }
   );
