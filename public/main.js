@@ -1,19 +1,22 @@
+const registerButton = document.getElementById('monBouton4');
+const loginInput = document.getElementById('loginInput');
+const passwordInput = document.getElementById('passwordInput');
+const loginButton = document.getElementById('login');
+
 //fonction inscription 
-function inscription(req, res) {
-    registerButton.addEventListener('click', () => {
-    fetch('/inscription', {
+monBouton4.addEventListener('click', () => {
+    fetch('/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ login: loginInput.value , password: passwordInput.value })     
+        body: JSON.stringify({ inputValue: loginInput.value, password: passwordInput.value })
     }).then(response => response.text())
-      .then(data => {
-          alert(data);
-      });
+        .then(data => {
+            alert(data);
+        });
 });
 
-}
 
 //fonction se connecter
 function connexion(req, res) {

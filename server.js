@@ -27,7 +27,7 @@ app.use(express.json());
 ////////////////////////////////////////////////////////////// ROUTES ////////////////////////////////////////////////////////////////
 
 // route inscription 
-app.post('/inscription', (req, res) => {
+/*app.post('/inscription', (req, res) => {
   connection.query(
   'INSERT INTO User (login, password) VALUES (?, ?)',
   [req.body.login, req.body.password],
@@ -41,12 +41,24 @@ app.post('/inscription', (req, res) => {
     res.json({ message: 'Inscription réussie !', userId: results.insertId });
   })
 });
+*/
 
+app.post('/register', (req, res) => {
 
-
-
-
-
+  connection.query(
+    'INSERT INTO user (login, password) VALUES (?, ?)',
+    [req.body.inputValue, req.body.password],
+    (err, results) => {
+      if (err) {
+        console.error('Erreur lors de l\'insertion dans la base de données :', err);
+        res.status(500).json({ message: 'Erreur serveur' });
+        return;
+      }
+      console.log('Insertion réussie, ID utilisateur :', results.insertId);
+      res.json({ message: 'Inscription réussie !', userId: results.insertId });
+    }
+  );
+});
 
 //route se connecter 
 app.post('/connexion', (req, res) => {
@@ -54,16 +66,13 @@ app.post('/connexion', (req, res) => {
 
 });
 
-
 //route se déconnecter 
 app.post('/deconnexion', (req, res) => {
-
 
 });
 
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
-
 
 
 });
