@@ -36,6 +36,9 @@ loginButton.addEventListener('click', () => {
             } else {
                 alert(data.message);
             }
+
+            //refresh de la page 
+            window.location.reload();
         });
 });
 
@@ -43,6 +46,7 @@ loginButton.addEventListener('click', () => {
 decoBtn.addEventListener('click', () => {
         localStorage.removeItem('user');
         alert('Déconnexion réussie !');
+        window.location.reload();
 });
 
 //fonction qui permet au user de supprimer son compte
@@ -56,3 +60,14 @@ function supprimerUser(req, res) {
     
 
 }
+
+//afficher le bouton de déconnexion si l'utilisateur est connecté
+window.addEventListener('load', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        decoBtn.style.display = 'block';
+    } else {
+        decoBtn.style.display = 'none';
+    }
+});
+
