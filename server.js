@@ -60,17 +60,15 @@ app.post('/connexion', (req, res) => {
       res.status(401).json({ message: 'Identifiants invalides' });
       return;
     }
-    // Identifiants valides 
-    //renvoi les information du user
     res.json({ message: 'Connexion réussie !', user: results[0] });
   });
 });
 
 //route qui permet au user de supprimer son compte 
 app.post('/supprimerCompte', (req, res) => {
-  const { login } = req.body;
   connection.query(
-    'DELETE FROM user WHERE login = ?', [login],
+    'DELETE FROM user WHERE login = ?',
+    [req.body.login],
     (err, results) => {
       if (err) {
         console.error('Erreur lors de la suppression dans la base de données :', err);

@@ -67,11 +67,15 @@ window.addEventListener('load', () => {
     }
 });
 
-//afficher le bouton de suppression si l'utilisateur est connecté
+//afficher le bouton de suppression si l'utilisateur est connecté sauf au compte admin
 window.addEventListener('load', () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-        supprBtn.style.display = 'block';
+        if (user.login !== 'admin') {
+            supprBtn.style.display = 'block';
+        } else {
+            supprBtn.style.display = 'none';
+        }
     } else {
         supprBtn.style.display = 'none';
     }
@@ -84,7 +88,7 @@ decoBtn.addEventListener('click', () => {
         window.location.reload();
 });
 
-//fonction qui permet au user de supprimer son compte
+//fonction qui permet au user de supprimer son compte sauf si le compte est admin
 supprBtn.addEventListener('click', () => {
     if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
         const user = JSON.parse(localStorage.getItem('user'));
