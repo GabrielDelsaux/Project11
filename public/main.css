@@ -78,3 +78,12 @@ body {
     width: 100%;
     height: auto;
 }
+
+#surprise {
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#changePasswordBtn {
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+    
+}

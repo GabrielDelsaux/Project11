@@ -11,6 +11,7 @@ let currentUser = null;
 const changePasswordBtn = document.getElementById('changePasswordBtn');
 const changemdpBtn = document.getElementById('changemdp');
 const phoenixImage = document.getElementById('phoenixImage');
+const surpriseButton = document.getElementById('surprise');
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -67,7 +68,7 @@ function afficherEtatConnexion(user) {
         supprBtn.style.display = 'block';
         text.textContent = `Bienvenue ${user.login} !`;
         changemdpBtn.style.display = 'block';
-        phoenixImage.style.display = 'block'; 
+        surpriseButton.style.display = 'block';
     } else {
         loginInput.style.display = 'block';
         passwordInput.style.display = 'block';
@@ -77,9 +78,13 @@ function afficherEtatConnexion(user) {
         supprBtn.style.display = 'none';
         text.textContent = 'Bienvenue sur notre page d\'inscription';
         changemdpBtn.style.display = 'none';
-        phoenixImage.style.display = 'none';
+        surpriseButton.style.display = 'none';
     }
 }
+
+surpriseButton.addEventListener('click', () => {
+    phoenixImage.style.display = 'block';
+});
 
 // Au chargement, la session serveur décide si un utilisateur est connecté.
 window.addEventListener('load', () => {
