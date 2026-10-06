@@ -103,6 +103,10 @@ decoBtn.addEventListener('click', () => {
 
 //fonction qui permet au user de supprimer son compte sauf si le compte est admin
 supprBtn.addEventListener('click', () => {
+    if (currentUser && currentUser.login === 'admin') {
+        alert('Vous ne pouvez pas supprimer le compte admin.');
+        return;
+    }
     if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
         fetch('/supprimerCompte', {
             method: 'POST',
