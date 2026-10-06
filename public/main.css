@@ -34,3 +34,18 @@
 body {
     background-color : pink
 }
+
+#userList {
+    margin-top: 20px;
+    text-align: left;
+    white-space: pre-line;
+}
+
+.admin-user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 520px;
+    padding: 6px 0;
+}

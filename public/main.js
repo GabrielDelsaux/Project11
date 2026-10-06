@@ -4,8 +4,11 @@ const passwordInput = document.getElementById('passwordInput');
 const loginButton = document.getElementById('login');
 const decoBtn = document.getElementById('decoBtn');
 const supprBtn = document.getElementById('supprBtn');
-const login = localStorage.getItem("login");
 const text = document.getElementById('text');
+const afficherUserBtn = document.getElementById('afficherUserBtn');
+const userListContainer = document.getElementById('userList');
+let currentUser = null;
+const changePasswordBtn = document.getElementById('changePasswordBtn');
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -34,8 +37,7 @@ loginButton.addEventListener('click', () => {
         .then(data => {
             if (data.message === 'Connexion réussie !') {
                 alert(data.message);
-                //ajout dans le local storage les information du user
-                localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('token', data.token);
             } else {
                 alert(data.message);
             }
@@ -45,9 +47,14 @@ loginButton.addEventListener('click', () => {
         });
 });
 
-//enlever le formulaire de connexion et d'inscription si l'utilisateur est connecté
-window.addEventListener('load', () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+function afficherEtatConnexion(user) {
+    currentUser = user;
+    const isAdmin = user && user.login === 'admin';
+    afficherUserBtn.style.display = isAdmin ? 'block' : 'none';
+    userListContainer.style.display = 'none';
+    decoBtn.style.display = user ? 'block' : 'none';
+    supprBtn.style.display = user && !isAdmin ? 'block' : 'none';
+
     if (user) {
         loginInput.style.display = 'none';
         passwordInput.style.display = 'none';
@@ -56,6 +63,7 @@ window.addEventListener('load', () => {
         decoBtn.style.display = 'block';
         supprBtn.style.display = 'block';
         text.textContent = `Bienvenue ${user.login} !`;
+        changePasswordBtn.style.display = 'block';
     } else {
         loginInput.style.display = 'block';
         passwordInput.style.display = 'block';
@@ -64,62 +72,148 @@ window.addEventListener('load', () => {
         decoBtn.style.display = 'none';
         supprBtn.style.display = 'none';
         text.textContent = 'Bienvenue sur notre page d\'inscription';
+        changePasswordBtn.style.display = 'none';
     }
-});
+}
 
-//afficher le bouton de suppression si l'utilisateur est connecté sauf au compte admin
+// Au chargement, la session serveur décide si un utilisateur est connecté.
 window.addEventListener('load', () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        if (user.login !== 'admin') {
-            supprBtn.style.display = 'block';
-        } else {
-            supprBtn.style.display = 'none';
-        }
-    } else {
-        supprBtn.style.display = 'none';
-    }
+    // Supprime l'ancienne donnée utilisateur enregistrée avant l'utilisation du token.
+    localStorage.removeItem('user');
+    const token = localStorage.getItem('token');
+    fetch('/session', { headers: { Authorization: `Bearer ${token}` } })
+        .then(response => response.ok ? response.json() : null)
+        .then(data => {
+            const user = data ? data.user : null;
+            if (!user) {
+                localStorage.removeItem('token');
+            }
+            afficherEtatConnexion(user);
+        })
+        .catch(() => afficherEtatConnexion(null));
 });
 
 //fonction se déconnecter
 decoBtn.addEventListener('click', () => {
-        localStorage.removeItem('user');
-        alert('Déconnexion réussie !');
-        window.location.reload();
+    localStorage.removeItem('token');
+    window.location.reload();
 });
 
 //fonction qui permet au user de supprimer son compte sauf si le compte est admin
 supprBtn.addEventListener('click', () => {
     if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
-        const user = JSON.parse(localStorage.getItem('user'));
         fetch('/supprimerCompte', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ login: user.login })
-        }).then(response => response.json())
-            .then(data => {
+        }).then(response => response.json().then(data => ({ response, data })))
+                .then(({ response, data }) => {
                 alert(data.message);
-                localStorage.removeItem('user');
-                window.location.reload();
+                    if (response.ok) {
+                        localStorage.removeItem('token');
+                        window.location.reload();
+                    }
             });
     }
 });
 
-//fonction qui permet a l'admin de supprimer un user
-function supprimerUser(req, res) {
-    
+// Récupère la liste puis crée une ligne et un bouton pour chaque utilisateur.
+function afficherUsers() {
+    fetch('/afficherUsers', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    }).then(response => response.json())
+        .then(data => {
+            if (data.message !== 'Liste des utilisateurs récupérée avec succès !') {
+                alert(data.message);
+                return;
+            }
 
+            userListContainer.replaceChildren();
+            userListContainer.style.display = 'block';
+
+            const title = document.createElement('p');
+            title.textContent = 'Liste des utilisateurs :';
+            userListContainer.appendChild(title);
+
+            data.user.forEach(listedUser => {
+                const row = document.createElement('div');
+                row.className = 'admin-user-row';
+
+                const label = document.createElement('span');
+                label.textContent = `ID: ${listedUser.Id}, Login: ${listedUser.login}`;
+
+                const button = document.createElement('button');
+                button.textContent = 'Supprimer';
+                button.addEventListener('click', () => supprimerUser(listedUser.Id));
+
+                row.append(label, button);
+                userListContainer.appendChild(row);
+            });
+        })
+        .catch(() => alert('Erreur lors de la récupération des utilisateurs.'));
 }
 
-//afficher le bouton de déconnexion si l'utilisateur est connecté
-window.addEventListener('load', () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        decoBtn.style.display = 'block';
-    } else {
-        decoBtn.style.display = 'none';
+// Supprime l'utilisateur choisi puis actualise la liste.
+function supprimerUser(id) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+        return;
     }
+
+    fetch('/supprimerUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ id })
+    }).then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if (data.message === 'Suppression réussie !') {
+                afficherUsers();
+            }
+        })
+        .catch(() => alert('Erreur lors de la suppression de l\'utilisateur.'));
+}
+
+afficherUserBtn.addEventListener('click', () => {
+    if (currentUser && currentUser.login === 'admin') {
+        afficherUsers();
+    } else {
+        alert('Vous devez être connecté en tant qu\'admin pour afficher la liste des utilisateurs.');
+    }
+});
+
+//fonction qui permet de changer le mot de passe
+changePasswordBtn.addEventListener('click', () => {
+    const newPassword = document.getElementById('newPasswordInput').value;
+    if (!newPassword) {
+        alert('Veuillez entrer un nouveau mot de passe.');
+        return;
+    }
+
+    fetch('/changerMotDePasse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ newPassword })
+    }).then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if (data.message === 'Mot de passe changé avec succès !') {
+                document.getElementById('newPasswordInput').value = '';
+                document.getElementById('changePasswordForm').style.display = 'none';
+            }
+        })
+        .catch(() => alert('Erreur lors du changement de mot de passe.'));
+});
+
+// Affiche le formulaire de changement de mot de passe lorsque le bouton est cliqué
+document.getElementById('changemdp').addEventListener('click', () => {
+    const form = document.getElementById('changePasswordForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
 });
 
