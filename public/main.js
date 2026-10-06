@@ -10,6 +10,7 @@ const userListContainer = document.getElementById('userList');
 let currentUser = null;
 const changePasswordBtn = document.getElementById('changePasswordBtn');
 const changemdpBtn = document.getElementById('changemdp');
+const phoenixImage = document.getElementById('phoenixImage');
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -66,6 +67,7 @@ function afficherEtatConnexion(user) {
         supprBtn.style.display = 'block';
         text.textContent = `Bienvenue ${user.login} !`;
         changemdpBtn.style.display = 'block';
+        phoenixImage.style.display = 'block'; 
     } else {
         loginInput.style.display = 'block';
         passwordInput.style.display = 'block';
@@ -75,6 +77,7 @@ function afficherEtatConnexion(user) {
         supprBtn.style.display = 'none';
         text.textContent = 'Bienvenue sur notre page d\'inscription';
         changemdpBtn.style.display = 'none';
+        phoenixImage.style.display = 'none';
     }
 }
 
@@ -147,7 +150,7 @@ function afficherUsers() {
                 row.className = 'admin-user-row';
 
                 const label = document.createElement('span');
-                label.textContent = `ID: ${listedUser.Id}, Login: ${listedUser.login}`;
+                label.textContent = `Login: ${listedUser.login}`;
 
                 const button = document.createElement('button');
                 button.textContent = 'Supprimer';

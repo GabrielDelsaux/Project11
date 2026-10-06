@@ -3,7 +3,15 @@
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    color: #333;
+    color: #b007f3;
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#phoenixImage {
+    display: block;
+    width: min(90%, 360px);
+    height: auto;
+    margin: 24px auto;
 }
 
 #loginInput, #passwordInput {
@@ -20,6 +28,8 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    color:#030000;
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
 }
 
 #decoBtn { 
@@ -32,7 +42,7 @@
 }
 
 body {
-    background-color : pink
+    background : linear-gradient(to bottom right, #f00707, #eeff00);
 }
 
 #userList {
@@ -48,4 +58,23 @@ body {
     gap: 16px;
     max-width: 520px;
     padding: 6px 0;
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#supprBtn {
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#afficherUserBtn {
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#changemdp {
+    background : linear-gradient(to bottom right, #b47d04, #b007f3);
+}
+
+#phoenixImage {
+    display: none;
+    width: 100%;
+    height: auto;
 }
