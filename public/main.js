@@ -9,6 +9,7 @@ const afficherUserBtn = document.getElementById('afficherUserBtn');
 const userListContainer = document.getElementById('userList');
 let currentUser = null;
 const changePasswordBtn = document.getElementById('changePasswordBtn');
+const changemdpBtn = document.getElementById('changemdp');
 
 //fonction inscription 
 monBouton4.addEventListener('click', () => {
@@ -54,6 +55,7 @@ function afficherEtatConnexion(user) {
     userListContainer.style.display = 'none';
     decoBtn.style.display = user ? 'block' : 'none';
     supprBtn.style.display = user && !isAdmin ? 'block' : 'none';
+    changePasswordBtn.style.display = user ? 'block' : 'none';
 
     if (user) {
         loginInput.style.display = 'none';
@@ -63,7 +65,7 @@ function afficherEtatConnexion(user) {
         decoBtn.style.display = 'block';
         supprBtn.style.display = 'block';
         text.textContent = `Bienvenue ${user.login} !`;
-        changePasswordBtn.style.display = 'block';
+        changemdpBtn.style.display = 'block';
     } else {
         loginInput.style.display = 'block';
         passwordInput.style.display = 'block';
@@ -72,7 +74,7 @@ function afficherEtatConnexion(user) {
         decoBtn.style.display = 'none';
         supprBtn.style.display = 'none';
         text.textContent = 'Bienvenue sur notre page d\'inscription';
-        changePasswordBtn.style.display = 'none';
+        changemdpBtn.style.display = 'none';
     }
 }
 
