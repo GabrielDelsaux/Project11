@@ -77,6 +77,12 @@ body {
     display: none;
     width: 100%;
     height: auto;
+    border-left-color: #b007f3;
+    border-top-color: blue;
+    border-right-color: red;
+    border-bottom-color: #f00707;
+    border-left-width: 5px;
+    border-left-style: solid;   
 }
 
 #surprise {
@@ -85,5 +91,6 @@ body {
 
 #changePasswordBtn {
     background : linear-gradient(to bottom right, #b47d04, #b007f3);
+
     
 }

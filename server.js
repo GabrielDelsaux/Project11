@@ -49,11 +49,15 @@ function requireAdmin(req, res, next) {
 
 ////////////////////////////////////////////////////////////// ROUTES ////////////////////////////////////////////////////////////////
 
-// Inscription avec mot de passe haché et ne pas pouvoir créer 2 user avec le même login
+// Inscription avec mot de passe haché et ne pas pouvoir créer 2 user avec le même login et 8 caractères minimum pour le mot de passe
 app.post('/register', async (req, res) => {
 
   if (!req.body.inputValue || !req.body.password) {
     return res.status(400).json({ message: 'Login et mot de passe requis.' });
+  }
+
+  if (req.body.password.length < 8) {
+    return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 8 caractères.' });
   }
 
   connection.query('SELECT * FROM user WHERE login = ?', [req.body.inputValue], async (err, results) => {
@@ -180,7 +184,14 @@ app.post('/register', async (req, res) => {
     );
   });
 
-  //route qui permet de changer le mot de passe d'un utilisateur et on ne peux pas changer pour remettre le même mot de passe que l'ancien
+  //route qui permet de changer le mot de passe d'un utilisateur et on ne peux pas changer pour remettre le même mot de passe que l'ancien et faire en sorte d'avoir 8 caractères minimum pour le mot de passe
+  app.post('/changerMotDePasse', requireToken, async (req, res) => {
+    const user = req.user;
+    const newPassword = req.body.newPassword;
+
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 8 caractères.' });
+    })
   app.post('/changerMotDePasse', requireToken, async (req, res) => {
     const user = req.user;
     const newPassword = req.body.newPassword;
