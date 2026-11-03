@@ -191,7 +191,8 @@ app.post('/register', async (req, res) => {
 
     if (!newPassword || newPassword.length < 8) {
       return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 8 caractères.' });
-    })
+    }
+  });
   app.post('/changerMotDePasse', requireToken, async (req, res) => {
     const user = req.user;
     const newPassword = req.body.newPassword;
